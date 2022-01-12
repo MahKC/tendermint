@@ -125,8 +125,16 @@ func (d *moduleDiscoverer) discover(pkg protoanalysis.Package) (Module, error) {
 	if err != nil {
 		return Module{}, err
 	}
+
+	//queries, err := cosmosanalysis.FindImplementation(pkgpath, queryImplementation)
+	//if err != nil {
+	//	return Module{}, err
+	//}
+
+	//impl := append(msgs, queries...)
 	if len(msgs) == 0 {
-		// No message means the module has not been found
+		// if len(msgs) == 0 {
+		// No message and queries means the module has not been found
 		return Module{}, nil
 	}
 
@@ -167,7 +175,7 @@ func (d *moduleDiscoverer) discover(pkg protoanalysis.Package) (Module, error) {
 			}
 		}
 
-		// do not use if used as a request/return type type of an RPC.
+		// do not use if used as a request/return type of RPC.
 		for _, s := range pkg.Services {
 			for _, q := range s.RPCFuncs {
 				if q.RequestType == protomsg.Name || q.ReturnsType == protomsg.Name {
